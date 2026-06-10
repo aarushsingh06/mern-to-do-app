@@ -56,7 +56,47 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
+app.put("/update/:id", async (req, res) => {
+  try {
+
+    await Task.findByIdAndUpdate(
+      req.params.id,
+      {
+        text: req.body.text
+      }
+    );
+
+    res.status(200).json({
+      message: "Task Updated"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: error.message
+    });
+
+  }
+});
+
 const PORT = 49404;
+app.delete("/delete/:id", async (req, res) => {
+  try {
+
+    await Task.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      message: "Task Deleted"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: error.message
+    });
+
+  }
+});
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${server.address().port}`);
